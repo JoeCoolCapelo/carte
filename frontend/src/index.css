@@ -1,8 +1,88 @@
-/* Cleared default Vite styles */
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Force App Height */
+html,
+body,
+#root {
+    height: 100% !important;
+    width: 100% !important;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+:root {
+    --map-blue: #2563EB;
+    --header-height: 70px;
+    --sidebar-width: 280px;
+}
+
+/* Base Styles */
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    color: #1f2937;
+    background-color: white;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Leaflet Fixes */
+.leaflet-container {
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 10;
+}
+
+/* Glassmorphism */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Custom UI Components */
+.sidebar-item-active {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border-right: 4px solid #2563eb;
+    font-weight: 600;
+}
+
+.premium-shadow {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+}
+
+/* Animations */
+@keyframes fade-in-up {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-fade-up {
+    animation: fade-in-up 0.5s ease-out forwards;
+}
+
+/* Scrollbar Utility */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

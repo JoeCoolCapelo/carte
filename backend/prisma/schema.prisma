@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Utilisateur {
+  id           Int           @id @default(autoincrement())
+  nom          String
+  email        String        @unique
+  motDePasse   String        @map("mot_de_passe")
+  role         String        @default("user")
+  dateCreation DateTime      @default(now()) @map("date_creation")
+  pois         Poi[]
+  signalements Signalement[]
+
+  @@map("utilisateurs")
+}
+
+model Categorie {
+  id    Int    @id @default(autoincrement())
+  nom   String @unique
+  icone String?
+  pois  Poi[]
+
+  @@map("categories")
+}
+
+model Poi {
+  id           Int           @id @default(autoincrement())
+  nom          String
+  description  String?
+  adresse      String?
+  altitude     Float?
+  photo        String?
+  statut       String        @default("ouvert")
+  categorieId  Int           @map("categorie_id")
+  categorie    Categorie     @relation(fields: [categorieId], references: [id])
+  geom         Unsupported("geometry(Point, 4326)")
+  creeBy       Int           @map("cree_par")
+  createur     Utilisateur   @relation(fields: [creeBy], references: [id])
+  dateCreation DateTime      @default(now()) @map("date_creation")
+  signalements Signalement[]
+
+  @@index([geom], map: "pois_geom_idx", type: Gist)
+  @@map("pois")
+}
+
+model Signalement {
+  id            Int         @id @default(autoincrement())
+  type          String
+  description   String?
+  poiId         Int         @map("poi_id")
+  poi           Poi         @relation(fields: [poiId], references: [id], onDelete: Cascade)
+  utilisateurId Int         @map("utilisateur_id")
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id])
+  statut        String      @default("en_attente")
+  dateCreation  DateTime    @default(now()) @map("date_creation")
+
+  @@map("signalements")
+}
